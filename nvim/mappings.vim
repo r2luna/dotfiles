@@ -27,7 +27,7 @@ nnoremap J mzJ`z
 " Tabs
 nmap <silent> <leader>tL :tabnext<cr>
 nmap <silent> <leader>tH :tabprevious<cr>
-nmap <leader>tN :tabnew 
+nmap <leader>tN :tabnew
 nmap <silent> <leader>tC :tabclose<cr>
 
 " Telescope
@@ -69,11 +69,11 @@ nnoremap <silent> <leader>cm :call phpactor#MoveFile()<cr>
 
 " Miscellaneous
 nnoremap <silent> <leader><space> :nohlsearch<cr>
-nmap <leader>cr :!composer require 
-nmap <leader>crd :!composer require --dev  
+nmap <leader>cr :!composer require
+nmap <leader>crd :!composer require --dev
 
 "
-" Window 
+" Window
 "
 " Splits
 nmap <silent> <leader>v :vsplit<cr>
@@ -83,7 +83,7 @@ nmap <silent> <leader>h :split<cr>
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>  " Focus active split
 nnoremap <leader>= :wincmd =<cr>                " Balance open splits
 
-" Simplify split movement 
+" Simplify split movement
 nmap <c-j> <c-w><c-j>
 nmap <c-k> <c-w><c-k>
 nmap <c-h> <c-w><c-h>
@@ -116,7 +116,7 @@ nnoremap <leader>k :m .-2<cr>==
 "
 nmap <silent> <leader>lv :call LaravelGoToDefinition()<cr> " See config/laravel.vim
 nmap <leader>lm :!php artisan make:
-nmap <leader>pt :!php artisan pest:test 
+nmap <leader>pt :!php artisan pest:test
 nmap <leader>rw :vsp routes/web.php<cr>
 
 "

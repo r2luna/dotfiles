@@ -28,6 +28,7 @@
 - create:
     - ~/intelephense
     - ~/code
+    - ~/code/valet
     - ~/.vim/undo-history
 
 - shell:
@@ -62,7 +63,7 @@
     - description: Install npm globals
       command: "npm i -g intelephense neovim vscode-html-languageserver-bin @tailwindcss/language-server vls"
     - description: Install Valet
-      command: "sudo valet install && sudo valet trust && valet park ~/code"
+      command: "sudo valet install && sudo valet trust && valet park ~/code/valet"
     - description: Setup intelephense
       command: "[ -f ~/intelephense/licence.txt ] || echo -n 'Intelephense licence key: ' && read licence && echo $licence > ~/intelephense/licence.txt"
       stdin: true

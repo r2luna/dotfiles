@@ -4,7 +4,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-DEFAULT_USER=michael
+DEFAULT_USER=r2luna
 ZSH_THEME=""
 CASE_SENSITIVE="true"
 COMPLETION_WAITING_DOTS="true"
