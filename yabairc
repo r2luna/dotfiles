@@ -22,7 +22,7 @@ yabai -m rule --add app="^Sizzy$" manage=off
 yabai -m rule --add app="^Bria$" manage=off
 yabai -m rule --add app="^Wyze$" manage=off
 yabai -m rule --add app="^Raycast$" manage=off
-yabai -m rule --add app="^Workbench$" manage=off
+yabai -m rule --add app="^Workbench$" afaanage=off
 yabai -m rule --add app="^1Password 7$" manage=off
 yabai -m rule --add app="^DBngin$" manage=off
 yabai -m rule --add app="^Setapp$" manage=off
