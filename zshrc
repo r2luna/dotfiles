@@ -10,15 +10,6 @@ export ZSH="/Users/r2luna/.oh-my-zsh"
 ZSH_DISABLE_COMPFIX=true
 ZSH_THEME="spaceship"
 
-
-EMOJI=(🐧 💩 🚀 🍑 👽 💀)
-
-RANDOM_EMOJI() {
-  SELECTED_EMOJI=${EMOJI[$RANDOM % ${#EMOJI[@]}]};
-
-  echo $SELECTED_EMOJI;
-}
-
 SPACESHIP_CHAR_SYMBOL="🐧 "
 SPACESHIP_DIR_TRUNC="1"
 
