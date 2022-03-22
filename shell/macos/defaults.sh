@@ -50,7 +50,7 @@ defaults write com.apple.BluetoothAudioAgent "Negotiated Bitpool Min" 80
 # defaults write NSGlobalDomain AppleMetricUnits -bool false
 
 # Set the timezone; see `systemsetup -listtimezones` for other values
-systemsetup -settimezone "America/Denver" > /dev/null
+# systemsetup -settimezone "America/Denver" > /dev/null
 
 # Require password immediately after sleep or screen saver begins
 defaults write com.apple.screensaver askForPassword -int 1

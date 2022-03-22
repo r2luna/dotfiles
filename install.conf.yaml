@@ -7,69 +7,51 @@
 
 - clean: ["~"]
 
-- link:
-    ~/.bashrc: bashrc
-    ~/.config/karabiner: karabiner
-    ~/.config/nvim: nvim
-    ~/.composer/composer.json: composer/composer.json
-    ~/.ctags: ctags
-    ~/.dotfiles: ""
-    ~/.fzf.zsh: fzf.zsh
-    ~/.gitconfig: gitconfig
-    ~/.gitignore_global: gitignore_global
-    ~/.php_cs: php_cs
-    ~/.slate: slate
-    ~/.sqliterc: sqliterc
-    ~/.tmux.conf: tmux.conf
-    ~/.yabairc: yabairc
-    ~/.zshrc: zshrc
-    ~/bin: bin
-
 - create:
-    - ~/intelephense
+    - ~/.composer
     - ~/code
     - ~/code/valet
-    - ~/.vim/undo-history
 
+- link:
+    ~/.composer/composer.json: composer/composer.json
+    ~/.gitconfig: gitconfig
+    ~/.gitignore_global: gitignore_global
+    ~/.zshrc: zshrc
+
+    
 - shell:
     - description: Install submodules
       command: "git submodule update --init --recursive"
-    - description: Hush login
-      command: "[ -f ~/.hushlogin ] || touch ~/.hushlogin"
-    - description: Install Brew
-      command: "[ -x \"$(which brew)\" ] || arch -x86_64 /usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\""
+    # - description: Install Brew
+    #   command: "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
     - description: Update Brew
       command: "brew update"
     - description: Install Brew bundler
       command: "brew tap homebrew/bundle"
     - description: Install Brewfile bundle
       command: "brew bundle"
-    - description: Install pipfile
-      command: "pip3 install -r pipfile"
-    - description: Install vim-plug
-      command: "[ -f ~/.config/neovim/autoload/plug.vim ] || curl -fLo ~/.config/neovim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-    - description: Install neovim plugins
-      command: "nvim +PlugInstall +qa"
-    - description: Installing and updating Composer
-      command: "sudo composer/install.sh"
-    - description: Preparing pure-prompt
-      command: "mkdir $HOME/dotfiles/pure"
-    - description: Installing oh-my-zsh
-      command: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
+    # - description: Install pipfile
+    #   command: "pip3 install -r pipfile"
+    # - description: Install vim-plug
+    #   command: "[ -f ~/.config/neovim/autoload/plug.vim ] || curl -fLo ~/.config/neovim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    # - description: Install neovim plugins
+    #   command: "nvim +PlugInstall +qa"
+    # - description: Installing and updating Composer
+    #   command: "sudo composer/install.sh"
+    # - description: Installing oh-my-zsh
+    #   command: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
     - description: Installing ZSH plugins
       command: "shell/zsh-plugins.sh"
-    - description: Install TPM
-      command: "git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm"
-    - description: Install npm globals
-      command: "npm i -g intelephense neovim vscode-html-languageserver-bin @tailwindcss/language-server vls"
+    # - description: Install npm globals
+    #   command: "npm i -g intelephense neovim vscode-html-languageserver-bin @tailwindcss/language-server vls"
     - description: Install Valet
       command: "sudo valet install && sudo valet trust && valet park ~/code/valet"
-    - description: Setup intelephense
-      command: "[ -f ~/intelephense/licence.txt ] || echo -n 'Intelephense licence key: ' && read licence && echo $licence > ~/intelephense/licence.txt"
-      stdin: true
-    - description: Set macOS defaults
-      command: shell/macos/defaults.sh
-    - description: Enable services
-      command: "brew services start yabai"
+    # - description: Setup intelephense
+    #   command: "[ -f ~/intelephense/licence.txt ] || echo -n 'Intelephense licence key: ' && read licence && echo $licence > ~/intelephense/licence.txt"
+    #   stdin: true
+    # - description: Set macOS defaults
+    #   command: "shell/macos/defaults.sh"
+    # - description: Enable services
+    #   command: "brew services start yabai"
     - description: Clear sudo credential cache
       command: "sudo --reset-timestamp"

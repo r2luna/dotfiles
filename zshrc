@@ -1,72 +1,50 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# -------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------
+# SETTINGS
+# -------------------------------------------------------------------------------------------
 
-DEFAULT_USER=r2luna
-ZSH_THEME=""
-CASE_SENSITIVE="true"
-COMPLETION_WAITING_DOTS="true"
-BREW_BASE_DIR=$(brew --prefix)
+export PATH=/opt/homebrew/bin/:$HOME/.composer/vendor/bin:$HOME/.local/bin/:/usr/local/bin:${PATH}
+export ZSH="/Users/r2luna/.oh-my-zsh"
+
+ZSH_DISABLE_COMPFIX=true
+ZSH_THEME="spaceship"
+
+
+EMOJI=(🐧 💩 🚀 🍑 👽 💀)
+
+RANDOM_EMOJI() {
+  SELECTED_EMOJI=${EMOJI[$RANDOM % ${#EMOJI[@]}]};
+
+  echo $SELECTED_EMOJI;
+}
+
+SPACESHIP_CHAR_SYMBOL="🐧 "
+SPACESHIP_DIR_TRUNC="1"
 
 plugins=(
+  zsh-completions
+  zsh-autosuggestions
+  zsh-syntax-highlighting
   git
   git-flow
-  history
-  history-substring-search
-  sublime
   artisan
-  zsh-syntax-highlighting
-  zsh-autosuggestions
+  composer
+  z
+  git-extras
 )
 
-fpath=($HOME/dotfiles/zsh-completions/completions $fpath)
-fpath+=(/opt/homebrew/share/zsh/site-functions)
-
-# Enable pure-prompt
-autoload -U promptinit; promptinit
-prompt pure
-
 source $ZSH/oh-my-zsh.sh
-if [[ `uname` == 'Darwin' ]]
-then
-  source $HOME/dotfiles/shell/macos/aliases.sh
-  source $HOME/dotfiles/shell/macos/functions.sh
-else
-  source $HOME/dotfiles/shell/linux/aliases.sh
-  source $HOME/dotfiles/shell/linux/functions.sh
-fi
 
-# User configuration
-export PATH="/opt/homebrew/bin:$HOME/bin:$HOME/.composer/vendor/bin:$HOME/.config/composer/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/local/opt/mysql-client/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:/usr/local/MacGPG2/bin:$HOME/node_modules/.bin"
 
-if command -v nvim &> /dev/null
-then
-  export EDITOR=nvim
-else
-  export EDITOR=vim
-fi
+# -------------------------------------------------------------------------------------------
+# APPLICATION SETTINGS
+# -------------------------------------------------------------------------------------------
 
-export BAT_THEME="Nord"
-export GPG_TTY=$(tty)
+ export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-export FZF_DEFAULT_COMMAND='ag -u -g ""'
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 
-setopt auto_cd
-cdpath=($HOME/code)
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
-
-ARTISAN_OPEN_ON_MAKE_EDITOR=vim
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-ensure_tmux_is_running
+source $HOME/dotfiles/shell/macos/aliases.sh
+source $HOME/dotfiles/shell/macos/functions.sh

@@ -1,5 +1,102 @@
-function releaseDate() {
-    date +"%Y%m%d%H%M"
+function link_valet() {
+    project=$1
+    full_directory=$(pwd)
+
+   if [ -z "$project" ]; then
+        project=$(basename "$PWD")
+    fi
+
+    init_vscode
+
+    eval "ln -s $full_directory ~/Code/valet/$project"
+    open "http://$project.test"
+}
+
+function init_vscode() {
+    cp $HOME/dotfiles/code/eslintrc.js .eslintrc.js
+    cp $HOME/dotfiles/code/php_cs .php_cs
+}
+
+function make_db() {
+    project=$1
+    if [ -z "$project" ]; then
+        project=$(basename "$PWD")
+    fi
+
+    echo "1. Creating database: $project"
+    mysql -uroot -e "create database $project"
+}
+
+function fresh_db() {
+    project=$1
+    if [ -z "$project" ]; then
+        project=$(basename "$PWD")
+    fi
+
+    mysql -uroot -e "drop database $project; create database $project"
+    echo "Done 😇"
+}
+
+function docker_make_db() {
+    project=$1
+    if [ -z "$project" ]; then
+        project=$(basename "$PWD")
+    fi
+#   mysql -uroot -e "create database $project"
+    docker exec -it TO--mariadb--focal--3306 mysql -uroot -ppassword -e "create database $project"
+}
+
+function docker_drop_db() {
+    project=$1
+    if [ -z "$project" ]; then
+        project=$(basename "$PWD")
+    fi
+#   mysql -uroot -e "drop database $project"
+    docker exec -it TO--mariadb--focal--3306 mysql -uroot -ppassword -e "drop database $project"
+}
+
+function docker_fresh_db() {
+    project=$1
+    if [ -z "$project" ]; then
+        project=$(basename "$PWD")
+    fi
+#   mysql -uroot -e "drop database $project"
+    docker exec -it TO--mariadb--focal--3306 mysql -uroot -ppassword -e "drop database $project; create database $project"
+    echo "Done 😇"
+}
+
+function list_dbs() {
+    docker exec -it TO--mariadb--focal--3306 mysql -uroot -ppassword -e "show databases"
+}
+
+## Toggle xdebug
+function tx() {
+    # Set php.ini path
+    php_ini=$(php --ini | grep "Loaded Configuration File:" | sed -e 's/Loaded Configuration File://g' | tr -d '[:space:]')
+
+    # Check if file starts with a comment #
+    test=$(sed -n '/^#/p;q' "$php_ini")
+
+    # If xdebug is enabled we will disabled
+    if [ -z "$test" ]; then
+        echo "Xdebug disabled"
+        sed -i '.bak' '/xdebug/s/^/#/' "$php_ini"
+    else
+        echo "Xdebug enabled"
+        sed -i '.bak' '/xdebug/s/^#//' "$php_ini"
+    fi
+
+    valet restart
+}
+
+function soapbox_env() {
+    valet use php@7.2
+    composer self-update --1
+}
+
+function default_env() {
+    valet use php@8.0
+    composer self-update --2
 }
 
 function routes()
@@ -22,99 +119,29 @@ function routes()
     fi
 }
 
-function composer-link() {
-    composer config repositories.local '{"type": "path", "url": "'$1'"}' --file composer.json
+
+function myip() {
+    dig +short myip.opendns.com @resolver1.opendns.com
 }
 
-function fetchjson()
+
+function httpstatus()
 {
-    if [ $# -eq 0 ]; then
-        echo "Usage: json <base_uri> <endpoint>"
+    if [ $# -ne 1 ]; then
+        echo "Usage: httpstatus <url>"
     else
-        if [ -z "$2" ]; then
-            endpoint=""
-            outfile="index.json"
+        if http --check-status --ignore-stdin HEAD ${1} &> /dev/null; then
+            echo 'OK!'
         else
-            endpoint="${2}"
-            outfile="${2//\//_}.json"
-        fi
-
-        if [ -z "$3" ]; then
-            outfile="$3"
-        fi
-
-        curl -s ${1}/${endpoint} | python -m json.tool > ${outfile}
-    fi
-}
-
-function syncBranch() {
-    if [ $# -eq 0 ]; then
-        echo "Usage: syncBranch <remote> <branch>"
-    else
-        git checkout ${2} && git fetch --prune && git merge --ff-only ${1} ${2}
-    fi
-}
-
-function unit() {
-    if [ -f "./vendor/bin/pest" ]; then
-        clear && ./vendor/bin/pest "$@"
-        return
-    fi
-
-    if [ -f "./vendor/bin/sail" ]; then
-        clear && ./vendor/bin/sail test
-        return
-    fi
-
-    (php artisan) > /dev/null
-
-    if [ $? -eq 0 ]; then
-        VERSION=$(php artisan --version | awk '{print $3}' | cut -d . -f1)
-
-        if [ $VERSION -ge 7 ]; then
-            clear && php artisan test
-            return
+            case $? in
+                2) echo 'Request timed out' ;;
+                3) echo 'Unexpected HTTP redirect' ;;
+                4) echo 'HTTP 4xx client error' ;;
+                5) echo 'HTTP 5xx server error' ;;
+                *) echo 'Other error' ;;
+            esac
         fi
     fi
-
-    if [ -f "./vendor/bin/phpunit" ]; then
-        clear && ./vendor/bin/phpunit --colors -c phpunit.xml "$@"
-    else
-        clear && phpunit "$@"
-    fi
 }
 
-function makegif() {
-    if  ! command -v ffmpeg > /dev/null
-    then
-        echo "ffmpeg not available"
-        exit 1;
-    fi
 
-    if [ $# -eq 0 ]; then
-        echo "Usage: makegif <input> <output>"
-    else
-        ffmpeg -i ${1} -vf "fps=10,scale=1440:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 ${2}
-    fi
-}
-
-function make-stereo() {
-    if ! command -v ffmpeg > /dev/null
-    then
-        echo "ffmpeg not available"
-        exit 1;
-    fi
-
-    filename=$(echo $1 | cut -d "." -f1)
-    extension=$(echo $1 | cut -d "." -f2)
-
-    ffmpeg -i $1 -af "pan=stereo|c0=c0|c1=c0" "$filename-stereo.$extension"
-}
-
-_not_inside_tmux() { [[ -z "$TMUX" ]] }
-
-ensure_tmux_is_running() {
-  if _not_inside_tmux; then
-    tat
-  fi
-}

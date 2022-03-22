@@ -10,6 +10,11 @@ if [ ! -d  "${INSTALL_BASE}/plugins/zsh-syntax-highlighting" ]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${INSTALL_BASE}/plugins/zsh-syntax-highlighting
 fi
 
+if [ ! -d  "${INSTALL_BASE}/plugins/zsh-completions" ]; then
+    git clone https://github.com/zsh-users/zsh-completions.git ${INSTALL_BASE}/plugins/zsh-completions
+fi
+
+
 if [ ! -d  "${INSTALL_BASE}/plugins/artisan" ]; then
     git clone https://github.com/jessarcher/zsh-artisan.git ${INSTALL_BASE}/plugins/artisan
 fi
